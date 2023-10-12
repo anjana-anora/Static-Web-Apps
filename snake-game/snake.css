@@ -1,7 +1,6 @@
 #gameContainer{
     margin: auto;
     text-align: center;
-    background-color: rgb(185, 122, 4);
     padding: 10px 0 50px 0;
 }
 #gameBoard{
@@ -18,7 +17,7 @@
     font-size: 20px;
     cursor: pointer;
     box-shadow: 3px 3px;
-    
+    margin: 25px 0 10px 0;    
 }
 #speedBtn{
     background-color: greenyellow;
@@ -31,7 +30,7 @@
     justify-content: center;
 }
 #score{
-    font-size: 70px;
+    font-size: 40px;
     font-family: cursive;
     margin: 0%;
 }

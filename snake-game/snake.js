@@ -39,7 +39,7 @@ function nextTick(){
     if(running){
         setTimeout(()=>{
             moveSnake();
-            checkGameOver();
+             checkGameOver();
             drawFood();
             drawSnake();
             nextTick();
@@ -51,9 +51,7 @@ function drawSnake(){
     ctx.strokeStyle = snakeBorder;
     let head = snake[0]
     snake.forEach(snakePart => {
-        console.log(snakePart,head,snakePart==head)
         if (snakePart == head){
-            console.log("head")
             ctx.fillStyle = snakeHeadColor;
             ctx.fillRect(snakePart.x,snakePart.y,unitSize,unitSize);
             ctx.strokeRect(snakePart.x,snakePart.y,unitSize,unitSize);
