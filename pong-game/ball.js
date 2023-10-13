@@ -1,23 +1,28 @@
-const paddle1Color="brown",paddle2Color="blue";
+const paddle1Color="Red",paddle2Color="Blue";
 const ballColor = "yellow";
 const paddle = {width:25,height:100};
 const paddleSpeed=50;
 const ballRadius =12.5;
 const paddle1UP = 87,paddle1DOWN=83;
 const paddle2UP = 38, paddle2DOWN = 40;
+const winScore= 3;
 
-let  ballSpeed=8;
-let gameBoard,ctx,scoreText;
+let  ballSpeed;
+let gameBoard,ctx,scoreText,btn;
 let gameWidth,gameHeight;
 let player1Score,player2Score;
 let ballX,ballY;
 let paddle1, paddle2;
 let timerId;
 let ballXDirection=0, ballYDirection=0;
+let running = true;
 
 function start(){
+    running = true;
+    ballSpeed = 10;
     gameBoard = document.getElementById("gameBoard");
     scoreText = document.getElementById("score");
+    document.getElementById("btn").textContent = "Restart";
     ctx = gameBoard.getContext('2d');
     gameWidth = gameBoard.width;
     gameHeight = gameBoard.height;
@@ -34,12 +39,15 @@ function start(){
 }
 function nextTick(){
     timerId = setTimeout(()=>{
-        clearBoard();
-        drawPaddles();
-        moveBall();
-        drawBall();
-        checkCollision();
-        nextTick();
+        if(running){
+            clearBoard();
+            drawPaddles();
+            moveBall();
+            drawBall();
+            checkCollision();
+            nextTick();
+
+        }
     },100);
 }
 
@@ -77,10 +85,12 @@ function drawBall(){
     ctx.stroke();
     ctx.fill();
 }
+
 function moveBall(){
     ballX += (ballSpeed * ballXDirection);
     ballY += (ballSpeed * ballYDirection);
 }
+
 function changeDirection(event){
     let keyPressed = event.keyCode;
 
@@ -100,6 +110,7 @@ function changeDirection(event){
     }
 
 }
+
 function checkCollision(){
     if (ballY <= ballRadius || ballY >= gameHeight-ballRadius){
         ballYDirection *= -1
@@ -120,7 +131,7 @@ function checkCollision(){
         if(ballY >= paddle1.y && ballY<= paddle1.y + paddle.height){
             ballX= (paddle1.x + paddle.width + ballRadius);
             ballXDirection *= -1;
-            ballSpeed = Number((ballSpeed + 0.2).toFixed(1));
+            ballSpeed = Number((ballSpeed + 0.5).toFixed(1));
             console.log("ball Speed is ",ballSpeed);
         }
     }
@@ -128,7 +139,7 @@ function checkCollision(){
         if(ballY >= paddle2.y && ballY<= paddle2.y + paddle.height){
             ballX = (paddle2.x - ballRadius);
             ballXDirection *= -1;
-            ballSpeed = Number((ballSpeed + 0.2).toFixed(1));
+            ballSpeed = Number((ballSpeed + 0.5).toFixed(1));
             console.log("ball Speed is ",ballSpeed);
         }
     }
@@ -136,7 +147,14 @@ function checkCollision(){
 }
 function updateScore(){
     scoreText.textContent = `${player1Score} : ${player2Score}`;
-    console.log(`${player1Score} : ${player2Score}`)
+    console.log(`${player1Score} : ${player2Score}`);
+
+    running = (player1Score ==winScore || player2Score == winScore)? false : true;
+
+    if(!running){
+        let winColor = player1Score == winScore? paddle1Color : paddle2Color;
+        scoreText.textContent = `🎉${winColor} wins!`
+    }
 }
 function clearBoard(){
     ctx.fillStyle = "forestgreen";
